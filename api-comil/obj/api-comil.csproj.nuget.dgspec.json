@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fic\\Desktop\\Nova pasta community\\community-in-lounge\\api-comil\\api-comil.csproj": {}
+    "C:\\Users\\luciano bispo\\Desktop\\api\\community-in-lounge\\api-comil\\api-comil.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fic\\Desktop\\Nova pasta community\\community-in-lounge\\api-comil\\api-comil.csproj": {
+    "C:\\Users\\luciano bispo\\Desktop\\api\\community-in-lounge\\api-comil\\api-comil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fic\\Desktop\\Nova pasta community\\community-in-lounge\\api-comil\\api-comil.csproj",
+        "projectUniqueName": "C:\\Users\\luciano bispo\\Desktop\\api\\community-in-lounge\\api-comil\\api-comil.csproj",
         "projectName": "api-comil",
-        "projectPath": "C:\\Users\\fic\\Desktop\\Nova pasta community\\community-in-lounge\\api-comil\\api-comil.csproj",
-        "packagesPath": "C:\\Users\\fic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fic\\Desktop\\Nova pasta community\\community-in-lounge\\api-comil\\obj\\",
+        "projectPath": "C:\\Users\\luciano bispo\\Desktop\\api\\community-in-lounge\\api-comil\\api-comil.csproj",
+        "packagesPath": "C:\\Users\\luciano bispo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\luciano bispo\\Desktop\\api\\community-in-lounge\\api-comil\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\fic\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\luciano bispo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -80,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
