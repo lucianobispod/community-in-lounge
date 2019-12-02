@@ -37,6 +37,16 @@ namespace api_comil.Repositorios
                                .ToListAsync();
         }
 
+            public async Task<ActionResult<List<Evento>>> GetEventsByUser(int id){
+             return await db.Evento
+            .Where(w => w.DeletadoEm == null)
+            .Where(w => w.StatusEvento == "aprovado")
+            .Where(w => w.StatusEvento == "pendente")
+            .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
+            .Include(i => i.Comunidade)
+            .ToListAsync();
+        }
+
         public Task<ActionResult> Delete()
         {
             throw new System.NotImplementedException();

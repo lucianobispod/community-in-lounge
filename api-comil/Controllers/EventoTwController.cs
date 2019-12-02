@@ -27,6 +27,7 @@ namespace api_comil.Controllers
             return eventos;
         }
 
+        // Adm
         [HttpGet("private")]
         public async Task<ActionResult<List<EventoTw>>> GetPrivate()
         {
@@ -38,12 +39,24 @@ namespace api_comil.Controllers
             return eventos;
         }
 
-
+        //adm
         [HttpGet("{id}")]
         public async Task<ActionResult<EventoTw>> GetById(int id)
         {
 
             var evento = await repositorio.Get(id);
+
+            if (evento.Result == null) return NotFound();
+
+            return evento;
+        }
+
+        //adm
+        [HttpGet("privado/{id}")]
+        public async Task<ActionResult<EventoTw>> Private(int id)
+        {
+
+            var evento = await repositorio.GetPrivateById(id);
 
             if (evento.Result == null) return NotFound();
 
@@ -66,7 +79,7 @@ namespace api_comil.Controllers
             }
         }
 
-
+        //adm
         [HttpPost]
         public async Task<ActionResult<EventoTw>> Post(EventoTw evento)
         {
@@ -94,7 +107,8 @@ namespace api_comil.Controllers
             return await repositorio.Post(evento);
 
         }
-        [Authorize]
+
+        // adm
         [HttpPut("{id}")]
         public async Task<ActionResult<EventoTw>> Put(EventoTw update, int id)
         {
@@ -117,6 +131,7 @@ namespace api_comil.Controllers
 
         }
 
+        // adm
         [HttpDelete("{id}")]
         public async Task<ActionResult<EventoTw>> Delete(int id)
         {

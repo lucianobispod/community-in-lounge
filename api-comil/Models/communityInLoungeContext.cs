@@ -28,8 +28,9 @@ namespace api_comil.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-GEKDDU1;Database=communityInLounge;Integrated Security=true;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=communityInLounge;Integrated Security=true;");
             }
+            // DESKTOP-GEKDDU1
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

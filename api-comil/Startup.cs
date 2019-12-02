@@ -63,7 +63,7 @@ namespace api_comil
             options.AddDefaultPolicy(
                 builder =>
                 {
-                    builder.WithOrigins("*").WithHeaders("X-custom-header").WithMethods("GET, PUT, POST, DELETE");
+                    builder.WithOrigins("*").WithHeaders("*").WithMethods("GET, PUT, POST, DELETE");
                 });
         });
 
@@ -79,15 +79,15 @@ namespace api_comil
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
             app.UseCors();
             
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

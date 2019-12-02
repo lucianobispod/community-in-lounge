@@ -21,7 +21,7 @@ namespace api_comil.Controllers
         // /// </summary>
         // /// <param name="id">Id do usuário</param>
         // /// <returns>Usuário correspondente ao Id</returns>
-        [Authorize]
+        // [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> Get(int id)
         {
@@ -51,7 +51,6 @@ namespace api_comil.Controllers
 
             if (exist != null)
             {
-
                 return BadRequest("Esse email já está cadastrado. ");
             }
 
@@ -80,12 +79,22 @@ namespace api_comil.Controllers
         public async Task<ActionResult<Usuario>> Delete(int id)
         {
             var user = await usuariorep.Get(id);
-
             if (user == null) return NotFound();
+
+            // verificar se o usuario tem evento pendente ou aprovado
+            EventoRepositorio evento = new EventoRepositorio();
+            var eventoComunidade = evento.GetEventsByUser(id).Result;
+                
+                if(eventoComunidade.Value == null){
+                    user.DeletadoEm = DateTime.Now;
+                    await usuariorep.Delete(user);
+                    return user;
+                }else{
+                    return StatusCode(403,"Exclua seus eventos primeiros antes de deletar sua conta");
+                }
+
+
            
-            user.DeletadoEm = DateTime.Now;
-            await usuariorep.Delete(user);
-            return user;
 
         }
 

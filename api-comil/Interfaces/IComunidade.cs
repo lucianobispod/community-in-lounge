@@ -7,7 +7,7 @@ namespace api_comil.Interfaces
 {
     public interface IComunidade
     {
-        Task<List<Comunidade>> Get();
+        Task<List<Comunidade>> GetByUser(int id);
 
         Task<Comunidade> Get(int id);
 

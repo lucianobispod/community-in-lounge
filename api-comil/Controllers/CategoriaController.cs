@@ -5,6 +5,7 @@ using api_comil.Models;
 using api_comil.Repositorios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_comil.Controllers
 {
@@ -15,11 +16,10 @@ namespace api_comil.Controllers
         CategoriaRepositorio repositorio = new CategoriaRepositorio();
 
 
-        [Authorize(Roles ="Administrador")]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<Categoria>>> Get()
         {
-
             try
             {
                 var Categorias = await repositorio.Get();
@@ -51,7 +51,7 @@ namespace api_comil.Controllers
 
 
 
-        // [Authorize(Roles ="Administrador")]
+        [Authorize(Roles ="Administrador")]
         [HttpPost]
         public async Task<ActionResult<Categoria>> Post(Categoria nomeCategoria)
         {
@@ -95,7 +95,7 @@ namespace api_comil.Controllers
         }
 
 
-        // [Authorize(Roles ="Administrador")]
+        [Authorize(Roles ="Administrador")]
         [HttpDelete("{id}")]
 
         public async Task<ActionResult<Categoria>> Delete(int id)
@@ -141,7 +141,7 @@ namespace api_comil.Controllers
 
 
 
-        // [Authorize(Roles ="Administrador")]
+        [Authorize(Roles ="Administrador")]
         [HttpPut("{id}")]
 
         public async Task<ActionResult<Categoria>> Put(int id, [FromBody]Categoria update)

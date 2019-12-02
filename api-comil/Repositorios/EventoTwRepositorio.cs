@@ -24,6 +24,16 @@ namespace api_comil.Repositorios
             .FirstOrDefaultAsync();
         }
 
+        public async Task<ActionResult<EventoTw>> GetPrivateById(int id)
+        {
+            return await db.EventoTw
+            .Where(w => w.DeletadoEm == null)
+            .Where(w => w.EventoId == id)
+            .Where(w => w.Publico == "nao")
+            .Include(i => i.Categoria)
+            .FirstOrDefaultAsync();
+        }
+
         public async Task<ActionResult<List<EventoTw>>> GetPublic()
         {
             var eventos = await db.EventoTw

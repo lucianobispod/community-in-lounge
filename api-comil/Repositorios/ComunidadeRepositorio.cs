@@ -20,9 +20,12 @@ namespace api_comil.Repositorios
             return comunidade;
         }
 
-        public async Task<List<Comunidade>> Get()
+        public async Task<List<Comunidade>> GetByUser(int id)
         {
-            List<Comunidade> ListaDeComunidade = await db.Comunidade.Where(w => w.DeletadoEm == null).ToListAsync();
+            List<Comunidade> ListaDeComunidade = await db.Comunidade
+                                                         .Where(w => w.DeletadoEm == null)
+                                                         .Where(w => w.ResponsavelUsuarioId == id)
+                                                         .ToListAsync();
             return ListaDeComunidade;
         }
 

@@ -26,13 +26,13 @@ namespace api_comil.Controllers
         ComunidadeRepositorio repositorio = new ComunidadeRepositorio();
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<List<Comunidade>>> Get()
+        [HttpGet("byuser/{id}")]
+        public async Task<ActionResult<List<Comunidade>>> GetByUser(int id)
         {
             try
             {
 
-                var Comunidades = await repositorio.Get();
+                var Comunidades = await repositorio.GetByUser(id);
 
                 if (Comunidades == null)
                 {
@@ -40,7 +40,6 @@ namespace api_comil.Controllers
                 }
                 else
                 {
-
                     return Comunidades;
                 }
 
@@ -52,35 +51,38 @@ namespace api_comil.Controllers
                 throw;
             }
         }
+
         // /// <summary>
         // /// Método resposável por fazer busca de uma comunidade expecífica através do parâmetro - ID
         // /// </summary>
         // /// <param name="id">Recebe i ID da comunidade</param>
         // /// <returns>Comundade correspondente ao ID digitado</returns>
         // [Authorize]   
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Comunidade>> Get(int id)
-        {
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<Comunidade>> Get(int id)
+        // {
 
-            try
-            {
-                var comunidade = await repositorio.Get(id);
+        //     try
+        //     {
+        //         var comunidade = await repositorio.Get(id);
 
-                if (comunidade != null)
-                {
-                    return comunidade;
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (System.Exception)
-            {
+        //         if (comunidade != null)
+        //         {
+        //             return comunidade;
+        //         }
+        //         else
+        //         {
+        //             return NotFound();
+        //         }
+        //     }
+        //     catch (System.Exception)
+        //     {
 
-                throw;
-            }
-        }
+        //         throw;
+        //     }
+        // }
+
+
 
 
         // /// <summary>
