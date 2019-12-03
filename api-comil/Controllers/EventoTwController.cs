@@ -97,11 +97,14 @@ namespace api_comil.Controllers
             if (evento.EventoData.Month < DateTime.Now.Month) return BadRequest("No momento não é possivel voltar no tempo (Mês)");
             if (evento.EventoData.Day < DateTime.Now.Day) return BadRequest("No momento não é possivel voltar no tempo (Dia)");
 
+            EventoRepositorio eventoRepositorio = new EventoRepositorio();
 
             List<EventoTw> dataIgual = repositorio.ExistaData(evento.EventoData).Result.Value;
+            List<EventoTw> dataIgualComunidade = repositorio.ExistaData(evento.EventoData).Result.Value;
 
-            if (dataIgual.Count > 0) return BadRequest("Evento já cadastrado com essa data " + dataIgual.Count);
-            // fazer a mesma coisa para evento aprovado aqui e lá
+
+            if (dataIgual.Count > 0 || dataIgualComunidade.Count > 0) return BadRequest("Evento já cadastrado com essa data " + dataIgual.Count + dataIgualComunidade.Count );
+
 
 
             return await repositorio.Post(evento);

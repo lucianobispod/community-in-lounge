@@ -25,8 +25,6 @@ namespace api_comil.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> Get(int id)
         {
-
-
             Usuario userReturn = await usuariorep.Get(id);
             if (userReturn == null)
             {
@@ -34,6 +32,22 @@ namespace api_comil.Controllers
             }
             return userReturn;
         }
+
+        [HttpGet("Adm")]
+        public async Task<ActionResult<List<Usuario>>> GetAdm(int id)
+        {
+            try
+            {
+                return await usuariorep.GetAdm();
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            
+        }
+
 
         // /// <summary>
         // ///  Método de cadastro de usuário
@@ -92,10 +106,6 @@ namespace api_comil.Controllers
                 }else{
                     return StatusCode(403,"Exclua seus eventos primeiros antes de deletar sua conta");
                 }
-
-
-           
-
         }
 
         // /// <summary>
@@ -126,6 +136,92 @@ namespace api_comil.Controllers
             return await usuariorep.Put(user);
         }
 
+        //adm
+        [HttpPut("{id}/ToAd")]
+        public async Task<ActionResult<Usuario>> ChangeToAd(int id)
+        {
+
+            var user = await usuariorep.Get(id);
+
+            if (user == null) return StatusCode(404, "Esse usuário não existe");
+
+            TipoUsuarioRepositorio tipouser = new TipoUsuarioRepositorio();
+
+            var tipo = await tipouser.Get(user.TipoUsuarioId);
+
+            if (tipo.Titulo == "Comunidade") return StatusCode(403, "Essa operação não é possivel");
+
+            if (tipo.Titulo == "Funcionario")
+            {
+                var put = await tipouser.Get("Administrador");
+                user.TipoUsuarioId = put.TipoUsuarioId;
+
+                return await usuariorep.Put(user);
+            }else{
+                return user;
+            }
+        }
+
+        [HttpPut("{id}/ToFun")]
+        public async Task<ActionResult<Usuario>> ChangeToFu(int id)
+        {
+
+            var user = await usuariorep.Get(id);
+
+            if (user == null) return StatusCode(404, "Esse usuário não existe");
+
+            TipoUsuarioRepositorio tipouser = new TipoUsuarioRepositorio();
+
+            var tipo = await tipouser.Get(user.TipoUsuarioId);
+             if (tipo.Titulo == "Comunidade") return StatusCode(403, "Essa operação não é possivel");
+
+            if (tipo.Titulo == "Administrador")
+            {
+                var put = await tipouser.Get("Funcionario");
+                user.TipoUsuarioId = put.TipoUsuarioId;
+
+                return await usuariorep.Put(user);
+            }else{
+                return user;
+            }
+
+        }
+
+
+
+        [HttpPut("ResetPassword")]
+        public async Task<ActionResult<Usuario>> ResetPassword(ResetSenha email)
+        {
+            var user = await usuariorep.ExistEmail(email.Email);
+            if (user == null) return StatusCode(404, "Email não cadastrado");
+
+                user.Senha = user.Nome.Replace(" ","").ToLower();
+
+                var sucess = await usuariorep.Put(user);
+                if (sucess == null) return StatusCode(400);
+    
+                try
+                {
+                    usuariorep.Mensagem(user.Email, user.Senha);
+                    return StatusCode(200,"Senha atualizada. Email enviado com sucesso");
+                }
+                catch (System.Exception)
+                {
+
+                return StatusCode(200,"Senha atualizada. Falha ao enviar o email");
+                    throw;
+                }
+
+        }
+
+
+
+
+
+
+
+
+
         private bool ValidaEnderecoEmail(string enderecoEmail)
         {
             try
@@ -141,4 +237,8 @@ namespace api_comil.Controllers
 
 
     }
+}
+
+public class ResetSenha {
+    public string Email { get; set; }
 }
