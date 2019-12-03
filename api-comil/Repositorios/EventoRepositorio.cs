@@ -34,7 +34,6 @@ namespace api_comil.Repositorios
                 }
                 catch (System.Exception)
                 {
-
                     throw;
                 }
             }
@@ -87,52 +86,6 @@ namespace api_comil.Repositorios
         }
 
 
-
-
-
-
-
-
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> ApprovedUser(int id)
-        {
-            return await db.ResponsavelEventoTw
-                              .Include(w => w.EventoNavigation)
-                              .ThenInclude(w => w.Comunidade)
-                              .Where(w => w.EventoNavigation.StatusEvento == "Aprovado")
-                              .Where(w => w.EventoNavigation.Comunidade.ResponsavelUsuarioId == id)
-                              .ToListAsync();
-        }
-
-        public async Task<ActionResult<List<Evento>>> GetEventsByUser(int id)
-        {
-            return await db.Evento
-           .Where(w => w.DeletadoEm == null)
-           .Where(w => w.StatusEvento == "aprovado")
-           .Where(w => w.StatusEvento == "pendente")
-           .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
-           .Include(i => i.Comunidade)
-           .ToListAsync();
-        }
-
-        public Task<ActionResult> Delete()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<ActionResult<List<Evento>>> EventByCategory(int id)
-        {
-            var a = await db.Evento.Include(i => i.Categoria)
-                           .Where(w => w.CategoriaId == id)
-                           .ToListAsync();
-
-            foreach (var item in a)
-            {
-                item.Categoria.Evento = null;
-            }
-
-            return a;
-        }
-
         public async Task<ActionResult<List<Evento>>> Get()
         {
             var listEven = await db.Evento
@@ -152,7 +105,100 @@ namespace api_comil.Repositorios
         }
 
 
+        public async Task<ActionResult<List<Evento>>> PendingMounth(int mes)
+        {
+            return await db.Evento
+                .Where(w => w.DeletadoEm == null)
+                .Where(w => w.StatusEvento == "Pendente")
+                .Where(w => w.EventoData.Month == mes)
+                .OrderBy(o => o.EventoData)
+                .ToListAsync();
+        }
 
+        public async Task<ActionResult<Evento>> Realize(Evento evento)
+        {
+            evento.StatusEvento = "Realizado";
+            db.Evento.Update(evento);
+            await db.SaveChangesAsync();
+            return evento;
+        }
+
+
+
+   public async Task<ActionResult<List<Evento>>> PendingUser(int id)
+        {
+            return await db.Evento
+                               .Include(w => w.Categoria)
+                               .Include(w => w.Comunidade)
+                               .Where(w => w.StatusEvento == "Pendente")
+                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
+                               .ToListAsync();
+        }
+
+
+        public async Task<ActionResult<List<Evento>>> RealizeUser(int id)
+        {
+            return await db.Evento
+                              .Where(w => w.StatusEvento == "Realizado")
+                              .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
+                              .Include(w => w.Comunidade)
+                              .Include(w => w.Categoria)
+                              .ToListAsync();
+        }
+        public async Task<ActionResult<List<Evento>>> ApprovedUser(int id)
+        {
+            return await db.Evento
+                              .Include(w => w.Comunidade)
+                              .Include(w => w.Categoria)
+                              .Where(w => w.StatusEvento == "Aprovado")
+                              .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
+                              .ToListAsync();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<ActionResult<List<Evento>>> GetEventsByUser(int id)
+        {
+            return await db.Evento
+           .Where(w => w.DeletadoEm == null)
+           .Where(w => w.StatusEvento == "aprovado")
+           .Where(w => w.StatusEvento == "pendente")
+           .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
+           .Include(i => i.Comunidade)
+           .ToListAsync();
+        }
+
+        public async Task<ActionResult<Evento>> Delete(Evento evento)
+        {
+            await db.SaveChangesAsync();
+            return evento;
+        }
+
+        // public async Task<ActionResult<List<Evento>>> EventByCategory(int id)
+        // {
+        //     var a = await db.Evento.Include(i => i.Categoria)
+        //                    .Where(w => w.CategoriaId == id)
+        //                    .ToListAsync();
+
+        //     foreach (var item in a)
+        //     {
+        //         item.Categoria.Evento = null;
+        //     }
+
+        //     return a;
+        // }
 
         public async Task<Evento> GetExistEvent(int id)
         {
@@ -164,15 +210,6 @@ namespace api_comil.Repositorios
             .FirstOrDefaultAsync(f => f.EventoId == id);
 
             return evento;
-        }
-
-        public async Task<ActionResult<List<Evento>>> Mounth()
-        {
-            return await db.Evento
-                .Where(w => w.DeletadoEm == null)
-                .Where(w => w.EventoData.Month == DateTime.Now.Month)
-                .OrderBy(o => o.EventoData)
-                .ToListAsync();
         }
 
         public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
@@ -192,39 +229,6 @@ namespace api_comil.Repositorios
                               .Where(w => w.ResponsavelEvento == id)
                               .ToListAsync();
         }
-
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> PendingMounth(int id)
-        {
-            return await db.ResponsavelEventoTw
-                             .Include(w => w.EventoNavigation)
-                             .Where(w => w.EventoNavigation.StatusEvento == "Pendente")
-                             .Where(w => w.EventoNavigation.EventoData.Month == DateTime.Now.Month)
-                             .Where(w => w.ResponsavelEvento == id)
-                             .ToListAsync();
-        }
-
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> PendingUser(int id)
-        {
-            return await db.ResponsavelEventoTw
-                               .Include(w => w.EventoNavigation)
-                               .ThenInclude(w => w.Comunidade)
-                               .Where(w => w.EventoNavigation.StatusEvento == "Pendente")
-                               .Where(w => w.EventoNavigation.Comunidade.ResponsavelUsuarioId == id)
-                               .ToListAsync();
-        }
-
-
-
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> RealizeUser(int id)
-        {
-            return await db.ResponsavelEventoTw
-                              .Include(w => w.EventoNavigation)
-                              .ThenInclude(w => w.Comunidade)
-                              .Where(w => w.EventoNavigation.StatusEvento == "Realizado")
-                              .Where(w => w.EventoNavigation.Comunidade.ResponsavelUsuarioId == id)
-                              .ToListAsync();
-        }
-
 
         public async Task<ActionResult<List<Evento>>> ExistaData(DateTime data)
         {
@@ -285,16 +289,8 @@ namespace api_comil.Repositorios
 
         public async Task<ActionResult<Evento>> Update(Evento evento)
         {
-            if (evento.StatusEvento == "Aprovado")
-            {
-                Evento eventoRetornado = await db.Evento.FindAsync(evento.EventoId);
-                eventoRetornado.Nome = evento.Nome;
-                db.Evento.Update(eventoRetornado);
-            }
-            else
-            {
-                db.Entry(evento).State = EntityState.Modified;
-            }
+            db.Entry(evento).State = EntityState.Modified;
+            await db.SaveChangesAsync();
             return evento;
         }
 

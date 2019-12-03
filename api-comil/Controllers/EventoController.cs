@@ -140,10 +140,6 @@ namespace api_comil.Controllers
 
         }
 
-
-
-
-
         /// <summary>
         /// Método de busca de um evento através de um Id
         /// </summary>
@@ -158,7 +154,7 @@ namespace api_comil.Controllers
 
                 if (evento == null)
                 {
-                    return NotFound();
+                    return StatusCode(404, "Evento não encontrado");
                 }
 
                 return evento;
@@ -173,168 +169,166 @@ namespace api_comil.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
-        /// Método de busca de eventos do mês correspondente
+        /// 
         /// </summary>
-        /// <returns>eventos do mês</returns>
-        [HttpGet("Mes")]
-        public async Task<ActionResult<List<Evento>>> Mouth()
-        {
-            return await EventoRep.Mounth();
-        }
-
-
-
-        //ADM
-        /// <summary>
-        /// Método de busca dos eventos que estão pendentes
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <returns>Eventos pendentes</returns>
-        [HttpGet("Pendentes/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> PendingMounth(int id)
-        {
-
-            return await EventoRep.PendingMounth(id);
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /// <param name=""></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Evento>>> Get()
+        public async Task<ActionResult<List<Evento>>> GetAll()
         {
-            return await EventoRep.Get();
-        }
-
-
-
-
-
-        /// <summary>
-        /// Método para atualização de dados de um evento
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <param name="evento">Objeto evento</param>
-        /// <returns>Evento com dados atualizados</returns>
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Evento evento)
-        {
-            if (id != evento.EventoId) return BadRequest();
-            if (evento.DeletadoEm != null) return NotFound();
-
-
             try
             {
-                Evento eventoValido = EventoRep.Get(id).Result;
-                if (eventoValido == null)
+                var evento = await EventoRep.Get();
+
+                if (evento == null)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    await EventoRep.Update(evento);
+                    return StatusCode(404, "Eventos não encontrados");
                 }
 
+                return evento;
+
             }
-            catch (DbUpdateConcurrencyException)
+            catch (System.Exception)
             {
                 throw;
             }
-            return NoContent();
-
         }
 
 
-
-        ///adm
-        /// <summary>
-        /// Método de busca dos eventos aprovados pelo respectivo administrador
-        /// </summary>
-        /// <param name="id">Id do administrador</param>
-        /// <returns>Eventos que o respectivo administrador aceitou</returns>
-        [HttpGet("Aprovados/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
+        [HttpGet("pendenteMes/{mes}")]
+        public async Task<ActionResult<List<Evento>>> PendingMounth(int mes)
         {
-            return await EventoRep.MyEventsAccept(id);
+            if (mes > 12 || mes <= 0)
+            {
+                return StatusCode(400, "Esse mês não é valido");
+            }
+            return await EventoRep.PendingMounth(mes);
+        }
+       
+       
+        [HttpPut("realize/{id}")]
+        public async Task<ActionResult<Evento>> Realize(int id)
+        {
+            var evento = EventoRep.Get(id).Result;
+            if (evento == null) return StatusCode(404, "Esse evento não foi encontrado");
+            
+            return await EventoRep.Realize(evento);
         }
 
 
-        //ADM
+
+
         /// <summary>
-        /// Método dos eventos recusados pelo respectivo administrador
+        /// Método de eventos pendentes do usuário
         /// </summary>
-        /// <param name="id">Id do administrador</param>
-        /// <returns>Eventos recusados do respectivo administrador</returns>
-        [HttpGet("Recusados/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsReject(int id)
+        /// <param name="id">Id do evento</param>
+        /// <returns>Retorna os eventos pendenetes do usuário</returns>
+        [HttpGet("PendentesUsuario/{id}")]
+        public async Task<ActionResult<List<Evento>>> PendingUser(int id)
+        {
+            try
+            {
+                var eventos = await EventoRep.PendingUser(id);
+                if (eventos == null) return StatusCode(404, "Eventos não encontrados"); 
+
+                return eventos;
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+             
+        }
+
+
+
+
+        /// <summary>
+        /// Método de busca dos eventos já realizados pelo usuário
+        /// </summary>
+        /// <param name="id">Id do evento</param>
+        /// <returns>Eventos realizados pelo usuário</returns>
+        [HttpGet("RealizadosUsuario/{id}")]
+        public async Task<ActionResult<List<Evento>>> RealizeUser(int id)
         {
 
-            return await EventoRep.MyEventsReject(id);
+            return await EventoRep.RealizeUser(id);
         }
+
+
+
+
+        /// <summary>
+        /// Método de busca dos eventos do usuário que foram aprovados
+        /// </summary>
+        /// <param name="id">Id do evento</param>
+        /// <returns>Eventos do usuário que estão aprovados</returns>
+        [HttpGet("AprovadosUsuario/{id}")]
+        public async Task<ActionResult<List<Evento>>> ApprovedUser(int id)
+        {
+
+            return await EventoRep.ApprovedUser(id);
+        }
+
+
+        // /// <summary>
+        // /// Método para atualização de dados de um evento
+        // /// </summary>
+        // /// <param name="id">Id do evento</param>
+        // /// <param name="evento">Objeto evento</param>
+        // /// <returns>Evento com dados atualizados</returns>
+
+        // [HttpPut("{id}")]
+        // public async Task<ActionResult<Evento>> Put(int id, Evento evento)
+        // {
+        //     if (id != evento.EventoId) return StatusCode(400);
+        //     if (evento.DeletadoEm != null) return StatusCode(400);
+
+        //         Evento eventoValido = EventoRep.Get(id).Result;
+                
+        //         if(eventoValido.StatusEvento != "Reprovado") return StatusCode(403, "Não é possivel atualizard, esse evento já foi excluído");
+
+        //         if (eventoValido.StatusEvento != "Pendente"){
+        //             eventoValido.UrlEvento = evento.UrlEvento;
+
+        //             return await EventoRep.Update(eventoValido);
+        //         }else
+        //         {
+                    
+        //         }
+           
+        // }
+
+
+
+
+        // ///adm
+        // /// <summary>
+        // /// Método de busca dos eventos aprovados pelo respectivo administrador
+        // /// </summary>
+        // /// <param name="id">Id do administrador</param>
+        // /// <returns>Eventos que o respectivo administrador aceitou</returns>
+        // [HttpGet("Aprovados/{id}")]
+        // public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
+        // {
+        //     return await EventoRep.MyEventsAccept(id);
+        // }
+
+
+        // //ADM
+        // /// <summary>
+        // /// Método dos eventos recusados pelo respectivo administrador
+        // /// </summary>
+        // /// <param name="id">Id do administrador</param>
+        // /// <returns>Eventos recusados do respectivo administrador</returns>
+        // [HttpGet("Recusados/{id}")]
+        // public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsReject(int id)
+        // {
+
+        //     return await EventoRep.MyEventsReject(id);
+        // }
 
 
         // /// <summary>
@@ -348,44 +342,6 @@ namespace api_comil.Controllers
 
         //     return await EventoRep.EventByCategory(id);
         // }
-
-        /// <summary>
-        /// Método de eventos pendentes do usuário
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <returns>Retorna os eventos pendenetes do usuário</returns>
-        [HttpGet("PendentesUsuario/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> PendingUser(int id)
-        {
-
-            return await EventoRep.PendingUser(id);
-        }
-
-        /// <summary>
-        /// Método de busca dos eventos já realizados pelo usuário
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <returns>Eventos realizados pelo usuário</returns>
-        [HttpGet("RealizadosUsuario/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> RealizeUser(int id)
-        {
-
-            return await EventoRep.RealizeUser(id);
-        }
-
-        /// <summary>
-        /// Método de busca dos eventos do usuário que foram aprovados
-        /// </summary>
-        /// <param name="id">Id do evento</param>
-        /// <returns>Eventos do usuário que estão aprovados</returns>
-        [HttpGet("AprovadosUsuario/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> ApprovedUser(int id)
-        {
-
-            return await EventoRep.ApprovedUser(id);
-        }
-
-        //em vez de receber o id pega do token 
 
 
         private bool ValidaEnderecoEmail(string enderecoEmail)
