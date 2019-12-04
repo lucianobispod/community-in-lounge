@@ -4,13 +4,62 @@
         <name>api-comil</name>
     </assembly>
     <members>
-        <member name="M:api_comil.Controllers.EventoController.Put(System.Int32,api_comil.Models.Evento)">
+        <member name="M:api_comil.Controllers.EventoController.Post(api_comil.Models.Evento)">
             <summary>
-            Método para atualização de dados de um evento
+            Método de cadastrar Evento 
+            </summary>
+            <returns>Retorna evento cadastrado</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.Accept(System.Int32,System.Int32)">
+            <summary>
+            Método onde um administradoe aceita um evento
+            </summary>
+            <param name="idEvento">Id do evento</param>
+            <param name="idResp"> Id do resposável pelo evento</param>
+            <returns>Evento aprovado</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.Reject(System.Int32,System.Int32)">
+            <summary>
+            Método onde um administrador recusa um evento
+            </summary>
+            <param name="idEvento">Id do evento</param>
+            <param name="idResp">Id do responsável pelo evento</param>
+            <returns>Evento rejeitado</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.Get(System.Int32)">
+            <summary>
+            Método de busca de um evento através de um Id
             </summary>
             <param name="id">Id do evento</param>
-            <param name="evento">Objeto evento</param>
-            <returns>Evento com dados atualizados</returns>
+            <returns>Comunidade correspondente ao Id</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.GetAll">
+            <summary>
+            
+            </summary>
+            <param name=""></param>
+            <returns></returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.PendingUser(System.Int32)">
+            <summary>
+            Método de eventos pendentes do usuário
+            </summary>
+            <param name="id">Id do evento</param>
+            <returns>Retorna os eventos pendenetes do usuário</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.RealizeUser(System.Int32)">
+            <summary>
+            Método de busca dos eventos já realizados pelo usuário
+            </summary>
+            <param name="id">Id do evento</param>
+            <returns>Eventos realizados pelo usuário</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.ApprovedUser(System.Int32)">
+            <summary>
+            Método de busca dos eventos do usuário que foram aprovados
+            </summary>
+            <param name="id">Id do evento</param>
+            <returns>Eventos do usuário que estão aprovados</returns>
         </member>
         <member name="M:api_comil.Controllers.LoginController.Login(api_comil.ViewModel.LoginViewModel)">
             <summary>
