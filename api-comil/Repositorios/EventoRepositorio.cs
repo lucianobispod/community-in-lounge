@@ -131,6 +131,7 @@ namespace api_comil.Repositorios
                                .Include(w => w.Comunidade)
                                .Include(w => w.Sala)
                                .Where(w => w.StatusEvento == "Pendente")
+                               .Where(w => w.DeletadoEm == null)
                                .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                                .ToListAsync();
         }
@@ -140,6 +141,7 @@ namespace api_comil.Repositorios
         {
             return await db.Evento
                               .Where(w => w.StatusEvento == "Realizado")
+                              .Where(w => w.DeletadoEm == null)
                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                               .Include(w => w.Comunidade)
                               .Include(w => w.Categoria)
@@ -153,6 +155,7 @@ namespace api_comil.Repositorios
                               .Include(w => w.Categoria)
                               .Include(w => w.Sala)
                               .Where(w => w.StatusEvento == "Aprovado")
+                              .Where(w => w.DeletadoEm == null)
                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                               .ToListAsync();
         }
