@@ -63,7 +63,7 @@ namespace api_comil
             options.AddDefaultPolicy(
                 builder =>
                 {
-                    builder.WithOrigins("*").WithHeaders("*").WithMethods("GET, PUT, POST, DELETE");
+                    builder.WithOrigins("*").WithHeaders("*").WithMethods("*");
                 });
         });
 

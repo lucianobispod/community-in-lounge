@@ -40,6 +40,13 @@
             <param name=""></param>
             <returns></returns>
         </member>
+        <member name="M:api_comil.Controllers.EventoController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name=""></param>
+            <returns></returns>
+        </member>
         <member name="M:api_comil.Controllers.EventoController.PendingUser(System.Int32)">
             <summary>
             Método de eventos pendentes do usuário
