@@ -99,7 +99,7 @@ namespace api_comil.Controllers
                 }
                 catch (System.Exception)
                 {
-                    return StatusCode(200, "Ocorreu um problema na hora de enviar email" );
+                    return StatusCode(200, "Ocorreu um problema na hora de enviar email");
                     throw;
                 }
 
@@ -195,6 +195,38 @@ namespace api_comil.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Evento>> Delete(int id)
+        {
+            try
+            {
+                var evento = await EventoRep.Get(id);
+
+                if (evento == null) return StatusCode(404, "Evento não encontrado");
+                if (evento.StatusEvento == "Realizado") return StatusCode(403, "No momento não é possivel excluir esse evento - Realizado");
+                if (evento.StatusEvento == "Recusado") return StatusCode(403, "No momento não é possivel excluir esse evento - Recusado");
+                if (evento.StatusEvento == "Aprovado") return StatusCode(403, "No momento não é possivel excluir esse evento - Aprovado");
+                
+                if (evento.StatusEvento == "Pendente")
+                {
+                    EventoRep.Delete(evento);
+                }
+
+
+                return evento;
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
 
         [HttpGet("pendenteMes/{mes}")]
         public async Task<ActionResult<List<Evento>>> PendingMounth(int mes)
@@ -205,14 +237,14 @@ namespace api_comil.Controllers
             }
             return await EventoRep.PendingMounth(mes);
         }
-       
-       
+
+
         [HttpPut("realize/{id}")]
         public async Task<ActionResult<Evento>> Realize(int id)
         {
             var evento = EventoRep.Get(id).Result;
             if (evento == null) return StatusCode(404, "Esse evento não foi encontrado");
-            
+
             return await EventoRep.Realize(evento);
         }
 
@@ -230,16 +262,16 @@ namespace api_comil.Controllers
             try
             {
                 var eventos = await EventoRep.PendingUser(id);
-                if (eventos == null) return StatusCode(404, "Eventos não encontrados"); 
+                if (eventos == null) return StatusCode(404, "Eventos não encontrados");
 
                 return eventos;
             }
             catch (System.Exception)
             {
-                
+
                 throw;
             }
-             
+
         }
 
 
@@ -287,7 +319,7 @@ namespace api_comil.Controllers
         //     if (evento.DeletadoEm != null) return StatusCode(400);
 
         //         Evento eventoValido = EventoRep.Get(id).Result;
-                
+
         //         if(eventoValido.StatusEvento != "Reprovado") return StatusCode(403, "Não é possivel atualizard, esse evento já foi excluído");
 
         //         if (eventoValido.StatusEvento != "Pendente"){
@@ -296,9 +328,9 @@ namespace api_comil.Controllers
         //             return await EventoRep.Update(eventoValido);
         //         }else
         //         {
-                    
+
         //         }
-           
+
         // }
 
 

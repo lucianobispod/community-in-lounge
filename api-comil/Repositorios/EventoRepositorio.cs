@@ -85,7 +85,6 @@ namespace api_comil.Repositorios
             return evento;
         }
 
-
         public async Task<ActionResult<List<Evento>>> Get()
         {
             var listEven = await db.Evento
@@ -185,6 +184,8 @@ namespace api_comil.Repositorios
 
         public async Task<ActionResult<Evento>> Delete(Evento evento)
         {
+            evento.DeletadoEm = DateTime.Now;                   
+            db.Entry(evento).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return evento;
         }
