@@ -8,6 +8,8 @@ CREATE TABLE Tipo_usuario(
  Deletado_em DATETIME
  );
 
+ select*from Tipo_usuario;
+
  CREATE TABLE Usuario(
  Usuario_id INT IDENTITY PRIMARY KEY NOT NULL,
  Nome VARCHAR(100) NOT NULL,
@@ -19,6 +21,9 @@ CREATE TABLE Tipo_usuario(
  Deletado_em DATETIME,
  Tipo_usuario_id INT FOREIGN KEY REFERENCES Tipo_usuario(Tipo_usuario_id) NOT NULL
  );
+
+  select*from Usuario;
+
 
  CREATE TABLE Comunidade(
  Comunidade_id INT IDENTITY PRIMARY KEY NOT NULL,

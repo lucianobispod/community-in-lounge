@@ -6526,22 +6526,24 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\fic\\Desktop\\BACKEND\\community-in-lounge\\api-comil\\api-comil.csproj",
+      "projectUniqueName": "C:\\Users\\fic\\Desktop\\Nova pasta (4)\\community-in-lounge\\api-comil\\api-comil.csproj",
       "projectName": "api-comil",
-      "projectPath": "C:\\Users\\fic\\Desktop\\BACKEND\\community-in-lounge\\api-comil\\api-comil.csproj",
+      "projectPath": "C:\\Users\\fic\\Desktop\\Nova pasta (4)\\community-in-lounge\\api-comil\\api-comil.csproj",
       "packagesPath": "C:\\Users\\fic\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fic\\Desktop\\BACKEND\\community-in-lounge\\api-comil\\obj\\",
+      "outputPath": "C:\\Users\\fic\\Desktop\\Nova pasta (4)\\community-in-lounge\\api-comil\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\fic\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\fic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
