@@ -124,13 +124,14 @@ namespace api_comil.Repositorios
 
 
 
-   public async Task<ActionResult<List<Evento>>> PendingUser(int id)
+        public async Task<ActionResult<List<Evento>>> PendingUser(int id)
         {
             return await db.Evento
                                .Include(w => w.Categoria)
                                .Include(w => w.Comunidade)
                                .Include(w => w.Sala)
                                .Where(w => w.StatusEvento == "Pendente")
+                               .Where(w => w.DeletadoEm == null)
                                .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                                .ToListAsync();
         }
@@ -140,6 +141,7 @@ namespace api_comil.Repositorios
         {
             return await db.Evento
                               .Where(w => w.StatusEvento == "Realizado")
+                               .Where(w => w.DeletadoEm == null)
                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                               .Include(w => w.Comunidade)
                               .Include(w => w.Categoria)
@@ -153,6 +155,7 @@ namespace api_comil.Repositorios
                               .Include(w => w.Categoria)
                               .Include(w => w.Sala)
                               .Where(w => w.StatusEvento == "Aprovado")
+                              .Where(w => w.DeletadoEm == null)
                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                               .ToListAsync();
         }
@@ -184,7 +187,7 @@ namespace api_comil.Repositorios
 
         public async Task<ActionResult<Evento>> Delete(Evento evento)
         {
-            evento.DeletadoEm = DateTime.Now;                   
+            evento.DeletadoEm = DateTime.Now;
             db.Entry(evento).State = EntityState.Modified;
             await db.SaveChangesAsync();
             return evento;
