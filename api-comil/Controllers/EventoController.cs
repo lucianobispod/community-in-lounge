@@ -18,6 +18,7 @@ namespace api_comil.Controllers
         EventoRepositorio EventoRep = new EventoRepositorio();
         UsuarioRepositorio UsuarioRep = new UsuarioRepositorio();
         communityInLoungeContext db = new communityInLoungeContext();
+        UploadRepositorio _uploadRepo = new UploadRepositorio();
 
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace api_comil.Controllers
                 if (evento.StatusEvento == "Realizado") return StatusCode(403, "No momento não é possivel excluir esse evento - Realizado");
                 if (evento.StatusEvento == "Recusado") return StatusCode(403, "No momento não é possivel excluir esse evento - Recusado");
                 if (evento.StatusEvento == "Aprovado") return StatusCode(403, "No momento não é possivel excluir esse evento - Aprovado");
-                
+
                 if (evento.StatusEvento == "Pendente")
                 {
                     await EventoRep.Delete(evento);
@@ -315,23 +316,24 @@ namespace api_comil.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Evento>> Put(int id, Evento evento)
         {
-            // return Ok(" asdasdasd "+ evento + id);
             if (id != evento.EventoId) return StatusCode(400);
 
-                Evento eventoValido = EventoRep.Get(id).Result;
+            Evento eventoValido = EventoRep.Get(id).Result;
 
-                if (eventoValido == null) return StatusCode(404);
-                if(eventoValido.StatusEvento == "Reprovado") return StatusCode(403, "Não é possivel atualizar, esse evento foi reprovado");
-                if(eventoValido.StatusEvento == "Realizado") return StatusCode(403, "Não é possivel atualizar, esse evento já foi realizado");
+            if (eventoValido == null) return StatusCode(404);
+            if (eventoValido.StatusEvento == "Reprovado") return StatusCode(403, "Não é possivel atualizar, esse evento foi reprovado");
+            if (eventoValido.StatusEvento == "Realizado") return StatusCode(403, "Não é possivel atualizar, esse evento já foi realizado");
 
-                if (eventoValido.StatusEvento == "Aprovado"){
-                    eventoValido.UrlEvento = evento.UrlEvento;
+            if (eventoValido.StatusEvento == "Aprovado")
+            {
+                eventoValido.UrlEvento = evento.UrlEvento;
 
-                    return await EventoRep.Update(eventoValido);
-                }else
-                {
-                    return StatusCode(403, "Não é possivel atualizar ainda pendente");
-                }
+                return await EventoRep.Update(eventoValido);
+            }
+            else
+            {
+                return StatusCode(403, "Não é possivel atualizar ainda pendente");
+            }
 
         }
 
@@ -376,6 +378,41 @@ namespace api_comil.Controllers
 
         //     return await EventoRep.EventByCategory(id);
         // }
+
+
+
+
+        [HttpPut("{id}/uploadFoto")]
+        public async Task<ActionResult<Evento>> Put(int id)
+        {
+            var evento = await EventoRep.Get(id);
+            if (evento == null)
+            {
+                return NotFound("Evento não encontrado");
+            }
+
+            if( evento.StatusEvento == "Realizado" || evento.DeletadoEm != null){
+                return StatusCode(403,"Não é possivel fazer essa operação");
+            }
+
+            try
+            {
+                var arquivo = Request.Form.Files[0];
+                var caminho = _uploadRepo.Upload(arquivo, "Imagens/Evento");
+
+
+                evento.Foto = caminho;
+
+                return await EventoRep.Update(evento);
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+        }
+
 
 
         private bool ValidaEnderecoEmail(string enderecoEmail)

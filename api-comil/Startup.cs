@@ -35,27 +35,29 @@ namespace api_comil
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-            });  
-
-              services.AddControllers().AddNewtonsoftJson(opt =>
-            {
-                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
 
+            services.AddControllers().AddNewtonsoftJson(opt =>
+          {
+              opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+              opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+          });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters{
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     // Habilita os campos que serão validados
-                    ValidateIssuer = true,             
-                    ValidateAudience = true,          
-                    ValidateLifetime = true,           
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     //Configura os valores dos campos habilitados acima para validação   
                     ValidIssuer = Configuration["Token:Issuer"],
                     ValidAudience = Configuration["Token:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"]))
-                }; 
+                };
             });
 
 
@@ -68,7 +70,7 @@ namespace api_comil
                 });
         });
 
-         services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
         }
 
@@ -76,20 +78,22 @@ namespace api_comil
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-  // GET de Imagem
-            app.UseStaticFiles (new StaticFileOptions {
-                FileProvider = new PhysicalFileProvider (
-                    //Nome da pasta que existe
-                        Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
-                    RequestPath = "/FotoUsuario"
-            });
+            // app.UseStaticFiles();
+            // GET de Imagem
+            // app.UseStaticFiles(new StaticFileOptions
+            // {
+            //     FileProvider = new PhysicalFileProvider(
+            //             //Nome da pasta que existe
+            //             Path.Combine(Directory.GetCurrentDirectory(), "Imagens")),
+            //     RequestPath = "/Imagens"
+            // });
 
-            app.UseStaticFiles (new StaticFileOptions {
-                FileProvider = new PhysicalFileProvider (
-                    //Nome da pasta que existe
-                        Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
-                    RequestPath = "/FotoUsuario"
-            });
+            // app.UseStaticFiles (new StaticFileOptions {
+            //     FileProvider = new PhysicalFileProvider (
+            //         //Nome da pasta que existe
+            //             Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
+            //         RequestPath = "/FotoUsuario"
+            // });
 
             if (env.IsDevelopment())
             {
@@ -97,7 +101,7 @@ namespace api_comil
             }
 
             app.UseCors();
-            
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

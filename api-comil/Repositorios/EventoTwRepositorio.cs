@@ -195,7 +195,22 @@ namespace api_comil.Repositorios
         }
 
 
+        public async Task<ActionResult<EventoTw>> Upload(EventoTw evento)
+        {
 
+            try
+            {
+                db.Entry(evento).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return evento;
+                
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+        }
 
 
 

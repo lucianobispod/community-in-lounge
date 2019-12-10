@@ -16,6 +16,9 @@ namespace api_comil.Controllers
     public class UsuarioController : ControllerBase
     {
         UsuarioRepositorio usuariorep = new UsuarioRepositorio();
+        UploadRepositorio _uploadRepo = new UploadRepositorio();
+
+
         // /// <summary>
         // /// Método de busca de usuário através do Id
         // /// </summary>
@@ -42,10 +45,10 @@ namespace api_comil.Controllers
             }
             catch (System.Exception)
             {
-                
+
                 throw;
             }
-            
+
         }
 
 
@@ -98,14 +101,17 @@ namespace api_comil.Controllers
             // verificar se o usuario tem evento pendente ou aprovado
             EventoRepositorio evento = new EventoRepositorio();
             var eventoComunidade = evento.GetEventsByUser(id).Result;
-                
-                if(eventoComunidade.Value == null){
-                    user.DeletadoEm = DateTime.Now;
-                    await usuariorep.Delete(user);
-                    return user;
-                }else{
-                    return StatusCode(403,"Exclua seus eventos primeiros antes de deletar sua conta");
-                }
+
+            if (eventoComunidade.Value == null)
+            {
+                user.DeletadoEm = DateTime.Now;
+                await usuariorep.Delete(user);
+                return user;
+            }
+            else
+            {
+                return StatusCode(403, "Exclua seus eventos primeiros antes de deletar sua conta");
+            }
         }
 
         // /// <summary>
@@ -127,14 +133,60 @@ namespace api_comil.Controllers
                 return BadRequest();
             }
 
-            if (usuario.Nome != null) user.Nome = usuario.Nome; 
-            if (usuario.Telefone != null) user.Telefone = usuario.Telefone; 
-            if (usuario.Senha != null) user.Senha = usuario.Senha; 
-            if (usuario.Foto != null) user.Foto = usuario.Foto; 
-            if (usuario.Genero != null) user.Genero = usuario.Genero; 
+            if (usuario.Nome != null) user.Nome = usuario.Nome;
+            if (usuario.Telefone != null) user.Telefone = usuario.Telefone;
+            if (usuario.Senha != null) user.Senha = usuario.Senha;
+            if (usuario.Foto != null) user.Foto = usuario.Foto;
+            if (usuario.Genero != null) user.Genero = usuario.Genero;
 
             return await usuariorep.Put(user);
         }
+
+
+
+
+
+
+
+        [HttpPut("{id}/uploadFoto")]
+        public async Task<ActionResult<Usuario>> Put(int id)
+        {
+            var usuario = await usuariorep.Get(id);
+
+            if (usuario == null)
+            {
+                return NotFound("usuario não encontrado");
+            }
+
+            if (usuario.DeletadoEm != null)
+            {
+                return StatusCode(403, "Não é possivel fazer essa operação");
+            }
+
+            try
+            {
+                var arquivo = Request.Form.Files[0];
+                var caminho = _uploadRepo.Upload(arquivo, "Imagens/Usuario");
+
+
+                usuario.Foto = caminho;
+
+                return await usuariorep.Put(usuario);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+
+
+
+
+
+
 
         //adm
         [HttpPut("ToAd")]
@@ -157,7 +209,9 @@ namespace api_comil.Controllers
                 user.TipoUsuarioId = put.TipoUsuarioId;
 
                 return await usuariorep.Put(user);
-            }else{
+            }
+            else
+            {
                 return user;
             }
         }
@@ -173,7 +227,7 @@ namespace api_comil.Controllers
             TipoUsuarioRepositorio tipouser = new TipoUsuarioRepositorio();
 
             var tipo = await tipouser.Get(user.TipoUsuarioId);
-             if (tipo.Titulo == "Comunidade") return StatusCode(403, "Essa operação não é possivel");
+            if (tipo.Titulo == "Comunidade") return StatusCode(403, "Essa operação não é possivel");
 
             if (tipo.Titulo == "Administrador")
             {
@@ -181,7 +235,9 @@ namespace api_comil.Controllers
                 user.TipoUsuarioId = put.TipoUsuarioId;
 
                 return await usuariorep.Put(user);
-            }else{
+            }
+            else
+            {
                 return user;
             }
 
@@ -195,22 +251,22 @@ namespace api_comil.Controllers
             var user = await usuariorep.ExistEmail(email.Email);
             if (user == null) return StatusCode(404, "Email não cadastrado");
 
-                user.Senha = user.Nome.Replace(" ","").ToLower();
+            user.Senha = user.Nome.Replace(" ", "").ToLower();
 
-                var sucess = await usuariorep.Put(user);
-                if (sucess == null) return StatusCode(400);
-    
-                try
-                {
-                    usuariorep.Mensagem(user.Email, user.Senha);
-                    return StatusCode(200,"Senha atualizada. Email enviado com sucesso");
-                }
-                catch (System.Exception)
-                {
+            var sucess = await usuariorep.Put(user);
+            if (sucess == null) return StatusCode(400);
 
-                return StatusCode(200,"Senha atualizada. Falha ao enviar o email");
-                    throw;
-                }
+            try
+            {
+                usuariorep.Mensagem(user.Email, user.Senha);
+                return StatusCode(200, "Senha atualizada. Email enviado com sucesso");
+            }
+            catch (System.Exception)
+            {
+
+                return StatusCode(200, "Senha atualizada. Falha ao enviar o email");
+                throw;
+            }
 
         }
 
@@ -239,6 +295,7 @@ namespace api_comil.Controllers
     }
 }
 
-public class ResetSenha {
+public class ResetSenha
+{
     public string Email { get; set; }
 }

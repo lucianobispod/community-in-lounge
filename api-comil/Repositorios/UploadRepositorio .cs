@@ -27,9 +27,5 @@ namespace api_comil.Repositorios
             }           
         }
 
-        internal Task Alterar(Usuario usuario)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

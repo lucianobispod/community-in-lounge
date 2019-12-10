@@ -24,6 +24,7 @@ namespace api_comil.Controllers
         // /// </summary>
         // /// <returns>Todas as comunidades cadastradas no banco de dados</returns>
         ComunidadeRepositorio repositorio = new ComunidadeRepositorio();
+        UploadRepositorio _uploadRepo = new UploadRepositorio();
 
         [AllowAnonymous]
         [HttpGet("byuser/{id}")]
@@ -201,6 +202,49 @@ namespace api_comil.Controllers
             }
 
         }
+
+
+
+
+
+   [HttpPut("{id}/uploadFoto")]
+        public async Task<ActionResult<Comunidade>> Put(int id)
+        {
+            var comunidade = await repositorio.Get(id);
+            if (comunidade == null)
+            {
+                return NotFound("comunidade não encontrada");
+            }
+
+            if( comunidade.DeletadoEm != null){
+                return StatusCode(403,"Não é possivel fazer essa operação");
+            }
+
+            try
+            {
+                var arquivo = Request.Form.Files[0];
+                var caminho = _uploadRepo.Upload(arquivo, "Imagens/Comunidade");
+
+
+                comunidade.Foto = caminho;
+
+                return await repositorio.Put(comunidade);
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+
+        }
+
+
+
+
+
+
+
+
 
 
     }

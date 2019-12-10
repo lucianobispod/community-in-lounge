@@ -7,6 +7,7 @@ using api_comil.Repositorios;
 using api_comil.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_comil.Controllers
 {
@@ -15,6 +16,7 @@ namespace api_comil.Controllers
     public class EventoTwController : ControllerBase
     {
         EventoTwRepositorio repositorio = new EventoTwRepositorio();
+        UploadRepositorio _uploadRepo = new UploadRepositorio();
 
         [HttpGet("public")]
         public async Task<ActionResult<List<EventoTw>>> GetPublic()
@@ -131,6 +133,37 @@ namespace api_comil.Controllers
             if (sucess == null) return BadRequest("Não foi possivel atualizar");
 
             return sucess;
+
+        }
+
+
+        [HttpPut("{id}/uploadFoto")]
+        public async Task<ActionResult<EventoTw>> Upload(int id)
+        {
+            var evento = await repositorio.Get(id);
+            if (evento.Value == null)
+            {
+                return NotFound("Evento não encontrado");
+            }
+            if (evento.Value.DeletadoEm != null)
+            {
+                return NotFound("Não é possivel fazer essa operação");
+            }
+
+            try
+            {
+                var arquivo = Request.Form.Files[0];
+                var caminho = _uploadRepo.Upload(arquivo, "Imagens/Thoughtwoks");
+
+                evento.Value.Foto = caminho;
+
+                return await repositorio.Upload(evento.Value);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
