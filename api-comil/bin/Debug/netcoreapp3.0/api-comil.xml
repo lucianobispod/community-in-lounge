@@ -83,5 +83,18 @@
             <param name="login">Email e senha</param>
             <returns>Token</returns>
         </member>
+        <member name="M:api_comil.Controllers.SalaController.Get">
+            <summary>
+            Método Get, é para fazer a requisição HTTP Sala onde transmite a informação identificada na URL.
+            </summary>
+            <returns>Está retornando ListaDeSala</returns>
+        </member>
+        <member name="M:api_comil.Controllers.SalaController.Get(System.Int32)">
+            <summary>
+            Método Get(id) é para fazer a requisição HTTP Sala pelo Id, onde transmite a informação identificada na URL.
+            </summary>
+            <param name="id"></param>
+            <returns>Está retornando salaRetornada</returns>
+        </member>
     </members>
 </doc>

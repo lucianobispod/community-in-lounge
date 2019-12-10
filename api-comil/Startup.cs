@@ -78,22 +78,38 @@ namespace api_comil
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            // app.UseStaticFiles();
-            // GET de Imagem
-            // app.UseStaticFiles(new StaticFileOptions
-            // {
-            //     FileProvider = new PhysicalFileProvider(
-            //             //Nome da pasta que existe
-            //             Path.Combine(Directory.GetCurrentDirectory(), "Imagens")),
-            //     RequestPath = "/Imagens"
-            // });
+            app.UseStaticFiles();
+            // GET 
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                        //Nome da pasta que existe
+                        Path.Combine(Directory.GetCurrentDirectory(), "Imagens/Usuario")),
+                RequestPath = "/Usuario"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                        //Nome da pasta que existe
+                        Path.Combine(Directory.GetCurrentDirectory(), "Imagens/Evento")),
+                RequestPath = "/Evento"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                        //Nome da pasta que existe
+                        Path.Combine(Directory.GetCurrentDirectory(), "Imagens/Comunidade")),
+                RequestPath = "/Comunidade"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                        //Nome da pasta que existe
+                        Path.Combine(Directory.GetCurrentDirectory(), "Imagens/Thoughtwoks")),
+                RequestPath = "/Thoughtwoks"
+            });
 
-            // app.UseStaticFiles (new StaticFileOptions {
-            //     FileProvider = new PhysicalFileProvider (
-            //         //Nome da pasta que existe
-            //             Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
-            //         RequestPath = "/FotoUsuario"
-            // });
+           
 
             if (env.IsDevelopment())
             {
