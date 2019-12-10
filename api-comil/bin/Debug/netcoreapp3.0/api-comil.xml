@@ -40,6 +40,13 @@
             <param name=""></param>
             <returns></returns>
         </member>
+        <member name="M:api_comil.Controllers.EventoController.Delete(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name=""></param>
+            <returns></returns>
+        </member>
         <member name="M:api_comil.Controllers.EventoController.PendingUser(System.Int32)">
             <summary>
             Método de eventos pendentes do usuário
@@ -60,6 +67,14 @@
             </summary>
             <param name="id">Id do evento</param>
             <returns>Eventos do usuário que estão aprovados</returns>
+        </member>
+        <member name="M:api_comil.Controllers.EventoController.Put(System.Int32,api_comil.Models.Evento)">
+            <summary>
+            Método para atualização de dados de um evento
+            </summary>
+            <param name="id">Id do evento</param>
+            <param name="evento">Objeto evento</param>
+            <returns>Evento com dados atualizados</returns>
         </member>
         <member name="M:api_comil.Controllers.LoginController.Login(api_comil.ViewModel.LoginViewModel)">
             <summary>

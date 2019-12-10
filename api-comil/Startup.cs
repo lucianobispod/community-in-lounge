@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -74,6 +75,22 @@ namespace api_comil
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+  // GET de Imagem
+            app.UseStaticFiles (new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider (
+                    //Nome da pasta que existe
+                        Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
+                    RequestPath = "/FotoUsuario"
+            });
+
+            app.UseStaticFiles (new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider (
+                    //Nome da pasta que existe
+                        Path.Combine (Directory.GetCurrentDirectory (), "Imagens/FotoUsuario")),
+                    RequestPath = "/FotoUsuario"
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

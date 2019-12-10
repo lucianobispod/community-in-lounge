@@ -141,7 +141,7 @@ namespace api_comil.Repositorios
         {
             return await db.Evento
                               .Where(w => w.StatusEvento == "Realizado")
-                               .Where(w => w.DeletadoEm == null)
+                              .Where(w => w.DeletadoEm == null)
                               .Where(w => w.Comunidade.ResponsavelUsuarioId == id)
                               .Include(w => w.Comunidade)
                               .Include(w => w.Categoria)

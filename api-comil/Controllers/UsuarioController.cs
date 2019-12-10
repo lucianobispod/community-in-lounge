@@ -137,11 +137,11 @@ namespace api_comil.Controllers
         }
 
         //adm
-        [HttpPut("{id}/ToAd")]
-        public async Task<ActionResult<Usuario>> ChangeToAd(int id)
+        [HttpPut("ToAd")]
+        public async Task<ActionResult<Usuario>> ChangeToAd(ResetSenha email)
         {
-
-            var user = await usuariorep.Get(id);
+            var user = await usuariorep.ExistEmail(email.Email);
+            // var user = await usuariorep.Get(id);
 
             if (user == null) return StatusCode(404, "Esse usuário não existe");
 

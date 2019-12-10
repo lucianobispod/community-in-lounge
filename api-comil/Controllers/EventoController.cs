@@ -214,7 +214,7 @@ namespace api_comil.Controllers
                 
                 if (evento.StatusEvento == "Pendente")
                 {
-                    EventoRep.Delete(evento);
+                    await EventoRep.Delete(evento);
                 }
 
 
@@ -305,33 +305,35 @@ namespace api_comil.Controllers
         }
 
 
-        // /// <summary>
-        // /// Método para atualização de dados de um evento
-        // /// </summary>
-        // /// <param name="id">Id do evento</param>
-        // /// <param name="evento">Objeto evento</param>
-        // /// <returns>Evento com dados atualizados</returns>
+        /// <summary>
+        /// Método para atualização de dados de um evento
+        /// </summary>
+        /// <param name="id">Id do evento</param>
+        /// <param name="evento">Objeto evento</param>
+        /// <returns>Evento com dados atualizados</returns>
 
-        // [HttpPut("{id}")]
-        // public async Task<ActionResult<Evento>> Put(int id, Evento evento)
-        // {
-        //     if (id != evento.EventoId) return StatusCode(400);
-        //     if (evento.DeletadoEm != null) return StatusCode(400);
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Evento>> Put(int id, Evento evento)
+        {
+            // return Ok(" asdasdasd "+ evento + id);
+            if (id != evento.EventoId) return StatusCode(400);
 
-        //         Evento eventoValido = EventoRep.Get(id).Result;
+                Evento eventoValido = EventoRep.Get(id).Result;
 
-        //         if(eventoValido.StatusEvento != "Reprovado") return StatusCode(403, "Não é possivel atualizard, esse evento já foi excluído");
+                if (eventoValido == null) return StatusCode(404);
+                if(eventoValido.StatusEvento == "Reprovado") return StatusCode(403, "Não é possivel atualizar, esse evento foi reprovado");
+                if(eventoValido.StatusEvento == "Realizado") return StatusCode(403, "Não é possivel atualizar, esse evento já foi realizado");
 
-        //         if (eventoValido.StatusEvento != "Pendente"){
-        //             eventoValido.UrlEvento = evento.UrlEvento;
+                if (eventoValido.StatusEvento == "Aprovado"){
+                    eventoValido.UrlEvento = evento.UrlEvento;
 
-        //             return await EventoRep.Update(eventoValido);
-        //         }else
-        //         {
+                    return await EventoRep.Update(eventoValido);
+                }else
+                {
+                    return StatusCode(403, "Não é possivel atualizar ainda pendente");
+                }
 
-        //         }
-
-        // }
+        }
 
 
 
