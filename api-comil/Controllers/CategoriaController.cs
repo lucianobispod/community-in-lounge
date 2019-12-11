@@ -16,7 +16,7 @@ namespace api_comil.Controllers
         CategoriaRepositorio repositorio = new CategoriaRepositorio();
 
 
-        [Authorize]
+        // [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<Categoria>>> Get()
         {
@@ -42,6 +42,38 @@ namespace api_comil.Controllers
             catch (Exception)
             {
                 return Forbid();
+                throw;
+            }
+
+
+        }
+
+
+
+        [HttpGet("{nome}")]
+        public async Task<ActionResult<List<Categoria>>> Get(string nome)
+        {
+            try
+            {
+                var categorias = await repositorio.Search(nome);
+
+                if (categorias == null)
+                {
+                    return NotFound();
+                }
+                
+                //atribui o valor nulo para todos eventos que estão aninhados a categoria
+                foreach (var item in categorias)
+                {
+                    item.Evento = null;
+                    item.EventoTw = null;
+                }
+
+                return categorias;
+
+            }
+            catch (Exception)
+            {
                 throw;
             }
 
@@ -133,58 +165,46 @@ namespace api_comil.Controllers
 
 
 
+        // [Authorize(Roles ="Administrador")]
+        // [HttpPut("{id}")]
+
+        // public async Task<ActionResult<Categoria>> Put(int id, [FromBody]Categoria update)
+        // {
+        //     try
+        //     {
+
+        //         if (update.CategoriaId == id)
+        //         {
+        //             var categoria = await repositorio.Get(id);
+
+        //             var nomeExistente = await repositorio.Get(update);
+        //             if (nomeExistente != null)
+        //             {
+        //                 return BadRequest("Já existe uma categoria com esse nome");
+        //             }
 
 
+        //             if (categoria != null)
+        //             {
+        //                 categoria.Nome = update.Nome;
+        //                 return await repositorio.Put(categoria);
+        //             }
+        //             else
+        //             {
+        //                 return NotFound();
+        //             }
 
+        //         }else{
+        //             return BadRequest();
+        //         }
+        //     }
+        //     catch (System.Exception)
+        //     {
 
+        //         throw;
+        //     }
 
-
-
-
-        [Authorize(Roles ="Administrador")]
-        [HttpPut("{id}")]
-
-        public async Task<ActionResult<Categoria>> Put(int id, [FromBody]Categoria update)
-        {
-            try
-            {
-
-                if (update.CategoriaId == id)
-                {
-                    var categoria = await repositorio.Get(id);
-
-                    var nomeExistente = await repositorio.Get(update);
-                    if (nomeExistente != null)
-                    {
-                        return BadRequest("Já existe uma categoria com esse nome");
-                    }
-
-
-                    if (categoria != null)
-                    {
-                        categoria.Nome = update.Nome;
-                        return await repositorio.Put(categoria);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-
-                }else{
-                    return BadRequest();
-                }
-
-
-
-
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-
-        }
+        // }
 
 
 

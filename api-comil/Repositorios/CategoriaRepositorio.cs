@@ -47,5 +47,10 @@ namespace api_comil.Repositorios
         {
             return await db.Categoria.FirstOrDefaultAsync(f => f.Nome == categoria.Nome);
         }
+        
+        public async Task<List<Categoria>> Search(string nome)
+        {
+            return await db.Categoria.Where(f => f.Nome.Contains(nome)).ToListAsync();
+        }
     }
 }
