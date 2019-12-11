@@ -341,16 +341,16 @@ namespace api_comil.Controllers
 
 
         // ///adm
-        // /// <summary>
-        // /// Método de busca dos eventos aprovados pelo respectivo administrador
-        // /// </summary>
-        // /// <param name="id">Id do administrador</param>
-        // /// <returns>Eventos que o respectivo administrador aceitou</returns>
-        // [HttpGet("Aprovados/{id}")]
-        // public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
-        // {
-        //     return await EventoRep.MyEventsAccept(id);
-        // }
+        /// <summary>
+        /// Método de busca dos eventos aprovados pelo respectivo administrador
+        /// </summary>
+        /// <param name="id">Id do administrador</param>
+        /// <returns>Eventos que o respectivo administrador aceitou</returns>
+        [HttpGet("Aprovados/{id}")]
+        public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
+        {
+            return await EventoRep.MyEventsAccept(id);
+        }
 
 
         // //ADM

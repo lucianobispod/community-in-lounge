@@ -223,6 +223,7 @@ namespace api_comil.Repositorios
         {
             return await db.ResponsavelEventoTw
                            .Include(w => w.EventoNavigation)
+                           .ThenInclude(w => w.Comunidade)
                            .Where(w => w.EventoNavigation.StatusEvento == "Aprovado")
                            .Where(w => w.ResponsavelEvento == id)
                            .ToListAsync();

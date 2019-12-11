@@ -83,7 +83,7 @@ namespace api_comil.Controllers
 
 
 
-        [Authorize(Roles ="Administrador")]
+        // [Authorize(Roles ="Administrador")]
         [HttpPost]
         public async Task<ActionResult<Categoria>> Post(Categoria nomeCategoria)
         {
@@ -127,7 +127,7 @@ namespace api_comil.Controllers
         }
 
 
-        [Authorize(Roles ="Administrador")]
+        // [Authorize(Roles ="Administrador")]
         [HttpDelete("{id}")]
 
         public async Task<ActionResult<Categoria>> Delete(int id)
