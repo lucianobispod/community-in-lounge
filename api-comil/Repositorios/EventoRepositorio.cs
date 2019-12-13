@@ -107,6 +107,7 @@ namespace api_comil.Repositorios
         public async Task<ActionResult<List<Evento>>> PendingMounth(int mes)
         {
             return await db.Evento
+                .Include(i => i.Comunidade)
                 .Where(w => w.DeletadoEm == null)
                 .Where(w => w.StatusEvento == "Pendente")
                 .Where(w => w.EventoData.Month == mes)
@@ -219,14 +220,24 @@ namespace api_comil.Repositorios
             return evento;
         }
 
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
+        public async Task<ActionResult<List<Evento>>> MyEventsAccept(int id)
         {
             return await db.ResponsavelEventoTw
                            .Include(w => w.EventoNavigation)
                            .ThenInclude(w => w.Comunidade)
-                           .Where(w => w.EventoNavigation.StatusEvento == "Aprovado")
                            .Where(w => w.ResponsavelEvento == id)
-                           .ToListAsync();
+                           .Where(w => w.EventoNavigation.StatusEvento != "Recusado")
+                           .Select( e => new Evento{
+                               Nome = e.EventoNavigation.Nome,
+                               EventoData = e.EventoNavigation.EventoData,
+                               Horario = e.EventoNavigation.Horario,
+                               Descricao = e.EventoNavigation.Descricao,
+                               EmailContato = e.EventoNavigation.EmailContato,
+                               StatusEvento = e.EventoNavigation.StatusEvento,
+                               Foto = e.EventoNavigation.Foto,
+                               Comunidade = e.EventoNavigation.Comunidade,
+                               Categoria = e.EventoNavigation.Categoria,
+                           }).ToListAsync();
         }
 
         public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsReject(int id)

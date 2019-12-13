@@ -24,7 +24,7 @@ namespace api_comil.Interfaces
         Task<ActionResult<List<Evento>>> RealizeUser(int id); //eventos em realizados do usuario                      
 
 
-        Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsReject(int id); // eventos que o adm recusou                      
-        Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id); // eventos que o adm aceitou                            
+        // Task<ActionResult<List<Evento>>> MyEventsReject(int id); // eventos que o adm recusou                      
+        Task<ActionResult<List<Evento>>> MyEventsAccept(int id); // eventos que o adm aceitou                            
     }
 }

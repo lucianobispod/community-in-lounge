@@ -50,6 +50,24 @@ namespace api_comil.Repositorios
 
             return eventos;
         }
+        public async Task<ActionResult<List<EventoTw>>> All()
+        {
+            var eventos = await db.EventoTw
+           .Where(w => w.DeletadoEm == null)
+           .Include(i => i.Categoria)
+           .Include(i => i.Sala)
+           .ToListAsync();
+
+            foreach (var item in eventos)
+            {
+                item.Categoria.Evento = null;
+                item.Categoria.EventoTw = null;
+                item.Sala.EventoTw = null;
+                item.Sala.EventoTw = null;
+            }
+
+            return eventos;
+        }
         public async Task<ActionResult<List<EventoTw>>> GetPrivate()
         {
             var eventos = await db.EventoTw

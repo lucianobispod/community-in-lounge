@@ -347,7 +347,7 @@ namespace api_comil.Controllers
         /// <param name="id">Id do administrador</param>
         /// <returns>Eventos que o respectivo administrador aceitou</returns>
         [HttpGet("Aprovados/{id}")]
-        public async Task<ActionResult<List<ResponsavelEventoTw>>> MyEventsAccept(int id)
+        public async Task<ActionResult<List<Evento>>> MyEventsAccept(int id)
         {
             return await EventoRep.MyEventsAccept(id);
         }
