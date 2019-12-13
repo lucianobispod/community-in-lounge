@@ -61,7 +61,8 @@ namespace api_comil.Controllers
                 new Claim(JwtRegisteredClaimNames.NameId, usr.Nome),
                 new Claim(ClaimTypes.Role, usr.TipoUsuario.Titulo),
                 new Claim(JwtRegisteredClaimNames.Sub, Guid.NewGuid().ToString()),
-                new Claim("Roles", usr.TipoUsuario.Titulo)
+                new Claim("Roles", usr.TipoUsuario.Titulo),
+                new Claim("id", usr.UsuarioId.ToString())
 
             };
 
