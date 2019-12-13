@@ -90,6 +90,7 @@ namespace api_comil.Repositorios
             var listEven = await db.Evento
            .Include(i => i.Categoria)
            .Include(i => i.Comunidade)
+           .Include(i => i.Sala)
            .Where(w => w.StatusEvento == "Aprovado")
            .Where(w => w.DeletadoEm == null)
            .ToListAsync();
