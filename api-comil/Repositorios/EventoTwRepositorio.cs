@@ -40,6 +40,7 @@ namespace api_comil.Repositorios
            .Where(w => w.DeletadoEm == null)
            .Where(w => w.Publico.ToLower() == "sim")
            .Include(i => i.Categoria)
+           .Include(i => i.Sala)
            .ToListAsync();
 
             foreach (var item in eventos)
