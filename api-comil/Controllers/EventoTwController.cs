@@ -18,6 +18,15 @@ namespace api_comil.Controllers
         EventoTwRepositorio repositorio = new EventoTwRepositorio();
         UploadRepositorio _uploadRepo = new UploadRepositorio();
 
+        [HttpGet]
+        public async Task<ActionResult<List<EventoTw>>> Get()
+        {
+            return await repositorio.All();
+        }
+
+
+
+
         [HttpGet("public")]
         public async Task<ActionResult<List<EventoTw>>> GetPublic()
         {

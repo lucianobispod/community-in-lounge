@@ -76,6 +76,13 @@
             <param name="evento">Objeto evento</param>
             <returns>Evento com dados atualizados</returns>
         </member>
+        <member name="M:api_comil.Controllers.EventoController.MyEventsAccept(System.Int32)">
+            <summary>
+            Método de busca dos eventos aprovados pelo respectivo administrador
+            </summary>
+            <param name="id">Id do administrador</param>
+            <returns>Eventos que o respectivo administrador aceitou</returns>
+        </member>
         <member name="M:api_comil.Controllers.LoginController.Login(api_comil.ViewModel.LoginViewModel)">
             <summary>
             Método de login na plataforma
