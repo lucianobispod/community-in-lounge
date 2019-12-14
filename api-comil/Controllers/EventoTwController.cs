@@ -162,7 +162,7 @@ namespace api_comil.Controllers
             try
             {
                 var arquivo = Request.Form.Files[0];
-                var caminho = _uploadRepo.Upload(arquivo, "Imagens/Thoughtwoks");
+                var caminho = _uploadRepo.Upload(arquivo, "Imagens","Thoughtwoks");
 
                 evento.Value.Foto = caminho;
 

@@ -25,7 +25,16 @@ namespace api_comil.Repositorios
 
         public async Task<Usuario> Get(int id)
         {
-            return await db.Usuario.Where(w => w.DeletadoEm == null).Include(user => user.Comunidade).FirstOrDefaultAsync(f => f.UsuarioId == id);
+            var usuario = await db.Usuario
+            .Where(w => w.DeletadoEm == null)
+            .Include(user => user.Comunidade)
+            .FirstOrDefaultAsync(f => f.UsuarioId == id);
+            
+            foreach (var item in usuario.Comunidade)
+            {
+            item.Evento = null;
+            }
+            return usuario;
         }
 
         public async Task<List<Usuario>> GetAdm()
@@ -86,7 +95,7 @@ namespace api_comil.Repositorios
             }
         }
 
-        
+
 
 
         public async Task<Usuario> ExistEmail(string email)
@@ -101,12 +110,14 @@ namespace api_comil.Repositorios
             }
         }
 
-         public void Mensagem (string email, string senha) {
-            try {
+        public void Mensagem(string email, string senha)
+        {
+            try
+            {
                 // Estancia da Classe de Mensagem
-                MailMessage _mailMessage = new MailMessage ();
+                MailMessage _mailMessage = new MailMessage();
                 // Remetente
-                _mailMessage.From = new MailAddress (email);
+                _mailMessage.From = new MailAddress(email);
 
                 // Destinatario seta no metodo abaixo
 
@@ -114,7 +125,7 @@ namespace api_comil.Repositorios
                 _mailMessage.CC.Add(email);
                 _mailMessage.Subject = "COMMUNITY IN LOUNGE CODE XP";
                 _mailMessage.IsBodyHtml = true;
-                _mailMessage.Body = "<b>Olá Tudo bem ??</b><p>Essa é a sua nova senha "+ senha  +"</p>";
+                _mailMessage.Body = "<b>Olá Tudo bem ??</b><p>Essa é a sua nova senha " + senha + "</p>";
 
                 //CONFIGURAÇÃO COM PORTA
                 SmtpClient _smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32("587"));
@@ -129,9 +140,11 @@ namespace api_comil.Repositorios
 
                 _smtpClient.EnableSsl = true;
 
-                _smtpClient.Send (_mailMessage);
+                _smtpClient.Send(_mailMessage);
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

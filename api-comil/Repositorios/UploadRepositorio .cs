@@ -9,9 +9,9 @@ namespace api_comil.Repositorios
 {
     public class UploadRepositorio 
     {
-         public string Upload (IFormFile arquivo, string savingFolder) {
+         public string Upload (IFormFile arquivo, string pasta, string local ) {
 
-            var pathToSave = Path.Combine (Directory.GetCurrentDirectory (), savingFolder);
+            var pathToSave = Path.Combine (Directory.GetCurrentDirectory (), pasta+'/'+local);
 
             if (arquivo.Length > 0) {
                 var fileName = ContentDispositionHeaderValue.Parse (arquivo.ContentDisposition).FileName.Trim ('"');
@@ -21,7 +21,7 @@ namespace api_comil.Repositorios
                     arquivo.CopyTo (stream);
                 }                    
 
-                return savingFolder + "/" +fileName;
+                return local + "/" +fileName;
             } else {
                 return null;    
             }           
