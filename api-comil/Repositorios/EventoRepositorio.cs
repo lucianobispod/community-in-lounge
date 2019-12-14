@@ -90,6 +90,7 @@ namespace api_comil.Repositorios
             var listEven = await db.Evento
            .Include(i => i.Categoria)
            .Include(i => i.Comunidade)
+           .Include(i => i.Sala)
            .Where(w => w.StatusEvento == "Aprovado")
            .Where(w => w.DeletadoEm == null)
            .ToListAsync();
@@ -107,6 +108,9 @@ namespace api_comil.Repositorios
         public async Task<ActionResult<List<Evento>>> PendingMounth(int mes)
         {
             return await db.Evento
+                .Include(i => i.Comunidade)
+                .Include(i => i.Sala)
+                .Include(i => i.Categoria)
                 .Where(w => w.DeletadoEm == null)
                 .Where(w => w.StatusEvento == "Pendente")
                 .Where(w => w.EventoData.Month == mes)
