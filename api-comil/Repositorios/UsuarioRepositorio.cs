@@ -36,6 +36,18 @@ namespace api_comil.Repositorios
             }
             return usuario;
         }
+        
+        public async Task<Header> Header(int id)
+        {
+            return await db.Usuario
+            .Where(w => w.DeletadoEm == null)
+            .Where(w => w.UsuarioId == id)
+            .Select(h => new Header{
+                Nome = h.Nome,
+                Foto = h.Foto
+            }).SingleOrDefaultAsync();
+            
+        }
 
         public async Task<List<Usuario>> GetAdm()
         {
@@ -151,6 +163,11 @@ namespace api_comil.Repositorios
 
 
 
+    }
+
+    public class Header {
+        public string Nome { get; set; }
+        public string Foto { get; set; }
     }
 }
 

@@ -4,6 +4,13 @@
         <name>api-comil</name>
     </assembly>
     <members>
+        <member name="M:api_comil.Controllers.ComunidadeController.Get(System.Int32)">
+            <summary>
+            Método resposável por fazer busca de uma comunidade expecífica através do parâmetro - ID
+            </summary>
+            <param name="id">Recebe i ID da comunidade</param>
+            <returns>Comundade correspondente ao ID digitado</returns>
+        </member>
         <member name="M:api_comil.Controllers.EventoController.Post(api_comil.Models.Evento)">
             <summary>
             Método de cadastrar Evento 

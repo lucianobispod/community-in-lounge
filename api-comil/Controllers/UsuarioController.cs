@@ -35,6 +35,20 @@ namespace api_comil.Controllers
             }
             return userReturn;
         }
+        [HttpGet("Header/{id}")]
+        public async Task<ActionResult<Header>> Header(int id)
+        {
+            return await usuariorep.Header(id);
+        }
+
+
+
+
+
+
+
+
+
 
         [HttpGet("Adm")]
         public async Task<ActionResult<List<Usuario>>> GetAdm(int id)
