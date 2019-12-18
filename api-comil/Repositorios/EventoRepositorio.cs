@@ -79,6 +79,8 @@ namespace api_comil.Repositorios
             var evento = await db.Evento
             .Include(i => i.Categoria)
             .Include(c => c.Comunidade)
+            .ThenInclude(c => c.ResponsavelUsuario)
+            .Include(c => c.Sala)
             .Where(w => w.DeletadoEm == null)
             .FirstOrDefaultAsync(f => f.EventoId == id);
 
