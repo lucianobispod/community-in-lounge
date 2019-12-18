@@ -78,6 +78,7 @@ namespace api_comil.Repositorios
         {
             var evento = await db.Evento
             .Include(i => i.Categoria)
+            .Include(c => c.Sala)
             .Include(c => c.Comunidade)
             .ThenInclude(c => c.ResponsavelUsuario)
             .Include(c => c.Sala)
@@ -100,7 +101,10 @@ namespace api_comil.Repositorios
             foreach (var item in listEven)
             {
                 item.Categoria.Evento = null;
+                item.Categoria.EventoTw = null;
                 item.Comunidade.Evento = null;
+                item.Sala.Evento = null;
+                item.Sala.EventoTw = null;
             }
 
             return listEven;
@@ -192,6 +196,14 @@ namespace api_comil.Repositorios
         }
 
         public async Task<ActionResult<Evento>> Delete(Evento evento)
+        {
+            evento.DeletadoEm = DateTime.Now;
+            db.Entry(evento).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return evento;
+        }
+        
+        public async Task<ActionResult<Evento>> DeleteByAdministrador(Evento evento)
         {
             evento.DeletadoEm = DateTime.Now;
             db.Entry(evento).State = EntityState.Modified;

@@ -35,8 +35,6 @@ namespace api_comil.Controllers
             }
             return userReturn;
         }
-       
-       
         [HttpGet("Header/{id}")]
         public async Task<ActionResult<Header>> Header(int id)
         {

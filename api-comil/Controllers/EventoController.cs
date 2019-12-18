@@ -227,6 +227,35 @@ namespace api_comil.Controllers
                 throw;
             }
         }
+     
+
+     
+        [HttpDelete("{id}/DeleteByAdministrador")]
+        public async Task<ActionResult<Evento>> DeleteByAdministrador(int id)
+        {
+            try
+            {
+                var evento = await EventoRep.Get(id);
+
+                if (evento == null) return StatusCode(404, "Evento não encontrado");
+                if (evento.StatusEvento == "Realizado") return StatusCode(403, "No momento não é possivel excluir esse evento - Realizado");
+                if (evento.StatusEvento == "Recusado") return StatusCode(403, "No momento não é possivel excluir esse evento - Recusado");
+                if (evento.StatusEvento == "Pendente") return StatusCode(403, "No momento não é possivel excluir esse evento - Aprovado");
+
+                if (evento.StatusEvento == "Aprovado")
+                {
+                    await EventoRep.DeleteByAdministrador(evento);
+                }
+
+
+                return evento;
+
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
 
 
         [HttpGet("pendenteMes/{mes}")]
